@@ -1,0 +1,15 @@
+.compare2 {
+  float: left;
+}
+.notFound {
+  color: white;
+  background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%);
+  padding: 20px;
+  border-radius: 10px;
+}
+.notFound h5 {
+  color: white;
+}
+.productDetail-image img {
+  width: 350px;
+}

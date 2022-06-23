@@ -1,0 +1,7 @@
+.liveScoreHeader {
+  background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%);
+}
+.outCheck {
+  width: 19px;
+  margin-top: 2px;
+}

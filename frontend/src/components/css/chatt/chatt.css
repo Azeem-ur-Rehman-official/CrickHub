@@ -1,0 +1,117 @@
+.chat {
+  display: flex;
+  flex-direction: column;
+  flex: 0.65;
+}
+.myReply {
+  background-color: rgba(133, 231, 133, 0.342);
+}
+.chatt-header {
+  padding: 13px;
+  display: flex;
+  align-items: center;
+  background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%);
+
+  border-bottom: 1px solid rgb(205, 207, 205);
+}
+.messageLogin {
+  background-color: rgb(219, 135, 24);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.keep {
+  text-align: center;
+  margin-bottom: auto;
+  margin-top: 20%;
+}
+.chatt-header-Info {
+  display: flex;
+  align-items: center;
+
+  flex-direction: row;
+  flex: 1;
+  padding-left: 20px;
+}
+.chatt-header-Info > p {
+  margin-left: 10px;
+}
+.chat-body {
+  background-color: #dcd9d4;
+  background-image: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.5) 0%,
+      rgba(0, 0, 0, 0.5) 100%
+    ),
+    radial-gradient(
+      at 50% 0%,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(0, 0, 0, 0.5) 50%
+    );
+  background-blend-mode: soft-light, screen;
+  background-repeat: repeat;
+  background-position: center;
+  overflow-y: scroll;
+  padding: 30px;
+  height: 400px;
+}
+.chat-message {
+  position: relative;
+  background-color: white;
+  min-width: 200px;
+  width: fit-content;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 16px;
+}
+.chat-message > .text-danger {
+  font-size: 12px;
+  line-height: 12px;
+  margin-bottom: 6px;
+}
+.chat-message > .navbar > .mr-auto {
+  font-size: 14px;
+  line-height: 14px;
+}
+.chat-message .media .media-body .text-black-50 {
+  font-size: 0.9rem;
+}
+.chat-message .reply-btn {
+  display: none;
+}
+.chat-message:hover .reply-btn {
+  display: flex;
+  position: absolute;
+  top: 3px;
+  right: 8px;
+  z-index: 1000;
+}
+.chat-time {
+  font-size: xx-small;
+  line-height: normal;
+  margin-bottom: -5px;
+}
+.chat-reciver {
+  margin-left: auto;
+  background-color: rgb(91, 167, 91);
+  color: white;
+}
+.dropDown {
+  cursor: pointer;
+  font-size: 10px;
+}
+.dropDown:hover {
+  color: brown;
+}
+.replyContent {
+  color: rgb(134, 134, 133);
+}
+.mainReply {
+  background-color: rgba(62, 63, 63, 0.123);
+  padding: 4px;
+  border-radius: 4px;
+  margin-bottom: 6px;
+}
+.cursor-pointer {
+  cursor: pointer;
+}

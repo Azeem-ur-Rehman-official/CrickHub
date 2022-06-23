@@ -1,0 +1,107 @@
+.uperBox {
+  position: absolute;
+  background-color: rgba(201, 199, 197, 0.534);
+  width: 100%;
+  height: 100vh;
+  z-index: 99999;
+  display: flex;
+  justify-content: center;
+}
+.middleBox {
+  position: relative;
+  border-radius: 30px;
+  margin-top: 5%;
+  width: 70%;
+  max-width: 800px;
+  background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+  height: fit-content;
+  padding: 30px;
+}
+.middleBox h4 {
+  color: transparent;
+  animation: effect 2s linear infinite;
+}
+
+@keyframes effect {
+  0% {
+    background: linear-gradient(#008000, #00ff00);
+    -webkit-background-clip: text;
+  }
+
+  50% {
+    background: linear-gradient(#fa8d8d, #ff0000);
+    -webkit-background-clip: text;
+  }
+
+  100% {
+    background: linear-gradient(#3ce7d7, #000fff);
+    -webkit-background-clip: text;
+  }
+}
+.NotificationHeading {
+  text-align: center;
+  background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%);
+  padding: 15px;
+  color: white;
+  border-radius: 20px;
+}
+.not-btn {
+  position: absolute;
+  top: -15px;
+  right: 0px;
+  border: none;
+  font-size: 40px !important;
+  cursor: pointer;
+  padding: 0px;
+  margin: 0px;
+}
+.fa-times-circle {
+  color: #ff0000;
+}
+.notification-bar {
+  border-top-left-radius: 20px !important;
+  border-bottom-right-radius: 20px !important;
+  padding: 0px !important;
+  /* border: 2px solid rgb(116, 172, 255); */
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  min-width: 200px;
+  left: -120px !important;
+  max-height: 270px;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+.notification-bar::-webkit-scrollbar {
+  display: none;
+}
+.notification-bar.show {
+  display: flex;
+  flex-direction: column-reverse;
+}
+.notification-bar .dropdown-item {
+  padding: 14px 10px !important;
+  font-weight: bold;
+  font-size: 16px;
+}
+.notification-bar .dropdown-item:not(:first-child) {
+  border-bottom: 1px dotted rgb(145, 145, 145);
+}
+.notification-bar .dropdown-item:last-child {
+  border-top-left-radius: 20px !important;
+}
+.notification-bar .dropdown-item:first-child {
+  border-bottom-right-radius: 20px !important;
+}
+.notification-bar .dropdown-item.read {
+  background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+}
+.notification-bar .dropdown-item.unread span {
+  color: #ff0000;
+}
+.notification-bar .dropdown-item.unread {
+  background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+}
+.notification-bar .dropdown-item:hover {
+  color: rgb(27, 156, 34);
+}

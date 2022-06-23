@@ -1,0 +1,31 @@
+.score-card {
+  background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+}
+.score-card p {
+  color: rgb(22, 21, 21);
+}
+.card-img img {
+  width: 80px;
+  height: 80px;
+}
+.liveMatch {
+  color: transparent;
+  animation: effect 2s linear infinite;
+}
+
+@keyframes effect {
+  0% {
+    background: linear-gradient(#008000, #00ff00);
+    -webkit-background-clip: text;
+  }
+
+  50% {
+    background: linear-gradient(#fa8d8d, #ff0000);
+    -webkit-background-clip: text;
+  }
+
+  100% {
+    background: linear-gradient(#3ce7d7, #22f30f);
+    -webkit-background-clip: text;
+  }
+}
