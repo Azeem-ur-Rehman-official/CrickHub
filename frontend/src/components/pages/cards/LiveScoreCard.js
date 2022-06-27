@@ -1,5 +1,6 @@
 import '../../css/scoreCard.css';
 const LiveScoreCard = (props) => {
+  console.log('livescorecard');
   console.log(props);
   return (
     <div className="col-12 col-md-6 col-lg-4 p-4">
@@ -11,9 +12,13 @@ const LiveScoreCard = (props) => {
           </h6>
         </div>
         <div className="row headingDate px-3">
-          <p>
-            Today(<b className="liveMatch">Live</b>)
-          </p>
+          {props.payload.schedule.MatchCompleted == true ? (
+            <p>Result</p>
+          ) : (
+            <p>
+              Today(<b className="liveMatch">Live</b>)
+            </p>
+          )}
         </div>
 
         <div className=" middleTeams py-2">
@@ -28,7 +33,11 @@ const LiveScoreCard = (props) => {
               </span>
               <span className="text-center">
                 <p>
-                  Score : {props.payload.teamA_Score}/{props.payload.teamA_out}
+                  {props.payload.teamA_Ining_Status == true &&
+                  props.payload.teamB_Ining_Status == false
+                    ? 'Target'
+                    : 'Score'}{' '}
+                  : {props.payload.teamA_Score}/{props.payload.teamA_out}
                 </p>
                 <p>
                   Overs({props.payload.teamA_over}.{props.payload.teamA_balls})
@@ -45,7 +54,11 @@ const LiveScoreCard = (props) => {
               </span>
               <span className="text-center">
                 <p>
-                  Score : {props.payload.teamB_Score}/{props.payload.teamB_out}
+                  {props.payload.teamB_Ining_Status == true &&
+                  props.payload.teamA_Ining_Status == false
+                    ? 'Target'
+                    : 'Score'}{' '}
+                  : {props.payload.teamB_Score}/{props.payload.teamB_out}
                 </p>
                 <p>
                   Overs({props.payload.teamB_over}.{props.payload.teamB_balls})
@@ -59,6 +72,23 @@ const LiveScoreCard = (props) => {
             {props.payload.toss.name} wins the toss and elected to{' '}
             {props.payload.tossDecision} first
           </p>
+          <h6 className="text-uppercase text-white p-2 bg-success">
+            {' '}
+            {props.payload.schedule.MatchCompleted &&
+              props.payload.teamB_Score > props.payload.teamA_Score && (
+                <>
+                  {props.payload.schedule.team_B_name} wins by
+                  {props.payload.teamB_Score - props.payload.teamA_Score}
+                </>
+              )}
+            {props.payload.schedule.MatchCompleted &&
+              props.payload.teamB_Score < props.payload.teamA_Score && (
+                <>
+                  {props.payload.schedule.team_A_name} wins by{' '}
+                  {props.payload.teamA_Score - props.payload.teamB_Score} Runs
+                </>
+              )}
+          </h6>
         </div>
       </div>
     </div>

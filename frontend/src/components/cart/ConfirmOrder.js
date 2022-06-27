@@ -15,7 +15,7 @@ const ConfirmOrder = ({ history }) => {
     0
   );
   const shippingPrice = itemsPrice > 200 ? 0 : 25;
-  const taxPrice = Number((0.05 * itemsPrice).toFixed(2));
+  const taxPrice = 200;
   const totalPrice = (itemsPrice + shippingPrice + taxPrice).toFixed(2);
 
   const processToPayment = () => {
@@ -74,7 +74,7 @@ const ConfirmOrder = ({ history }) => {
 
                     <div className="col-4 col-lg-4 mt-4 mt-lg-0">
                       <p>
-                        Rs. {item.quantity} x {item.price}
+                        Rs. {item.quantity} x {item.price}{' '}
                         <b>Rs. {(item.quantity * item.price).toFixed(2)}</b>
                       </p>
                     </div>
@@ -94,14 +94,9 @@ const ConfirmOrder = ({ history }) => {
                 Subtotal:{' '}
                 <span className="order-summary-values">Rs. {itemsPrice}</span>
               </p>
+
               <p>
-                Shipping:{' '}
-                <span className="order-summary-values">
-                  Rs. {shippingPrice}
-                </span>
-              </p>
-              <p>
-                Tax:{' '}
+                Delivery Charges:{' '}
                 <span className="order-summary-values">Rs. {taxPrice}</span>
               </p>
 

@@ -4,18 +4,19 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 // Process stripe payments   =>   /api/v1/payment/process
 exports.processPayment = catchAsyncErrors(async (req, res, next) => {
+  console.log('payment');
   const paymentIntent = await stripe.paymentIntents.create({
     amount: req.body.amount,
     currency: 'pkr',
-    description: 'items purchase',
+    description: 'Pusrchase crickhub products',
     shipping: {
-      name: 'Azeem ue Rehman',
+      name: req.body.name,
       address: {
-        line1: 'JOHER TOWN P BLOCK',
-        postal_code: '42000',
-        city: 'LAHORE',
-        state: 'PUNJAB',
-        country: 'PAKISTAN',
+        line1: req.body.shippingInfo.address,
+        postal_code: req.body.shippingInfo.postalCode,
+        city: req.body.shippingInfo.city,
+
+        country: req.body.shippingInfo.country,
       },
     },
 
@@ -33,15 +34,15 @@ exports.processPaymentSubscription = catchAsyncErrors(
     const paymentIntent = await stripe.paymentIntents.create({
       amount: req.body.amount,
       currency: 'pkr',
-      description: 'buy subscription',
+      description: 'Pusrchase crickhub Tournament Subscription',
       shipping: {
-        name: 'Azeem ue Rehman',
+        name: req.body.name,
         address: {
-          line1: 'JOHER TOWN P BLOCK',
-          postal_code: '42000',
-          city: 'LAHORE',
-          state: 'PUNJAB',
-          country: 'PAKISTAN',
+          line1: req.body.address,
+          postal_code: req.body.postalCode,
+          city: req.body.city,
+
+          country: req.body.country,
         },
       },
 

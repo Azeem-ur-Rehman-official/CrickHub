@@ -10,10 +10,12 @@ const {
   joinTournamentSchedule,
   adminDeleteIning,
   getSingleInings,
+  getAllPastInings,
 } = require('../../controllers/TournamentController/iningController');
 const {
   createMatchLiveScore,
-  topPlayersList,
+  topPlayersBatsmanList,
+  topPlayersBlowlerList,
 } = require('../../controllers/TournamentController/liveScoreController');
 const {
   isAuthenticatedUser,
@@ -26,13 +28,15 @@ router
   .route('/tournament/match/live/score/update')
   .post(isAuthenticatedUser, createMatchLiveScore);
 router.route('/get/all/tournament/match/inings').get(getAllInings);
+router.route('/get/all/tournament/match/past/inings').get(getAllPastInings);
 router
   .route('/get/all/tournament/match/single/inings/:id')
   .get(getSingleMatchIning);
 router
-  .route('/get/all/tournament/match/single/inings/:id')
-  .get(getSingleMatchIning);
-router.route('/get/all/top/players/list').get(topPlayersList);
+  .route('/get/all/tournament/match/single/live/inings/:id')
+  .get(getSingleInings);
+router.route('/get/all/top/players/batsmans/list').get(topPlayersBatsmanList);
+router.route('/get/all/top/players/bowlers/list').get(topPlayersBlowlerList);
 // router
 //   .route('/join/tournament/schedule')
 //   .post(isAuthenticatedUser, joinTournamentSchedule);

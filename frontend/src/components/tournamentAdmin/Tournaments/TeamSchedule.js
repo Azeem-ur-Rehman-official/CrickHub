@@ -111,7 +111,12 @@ const TeamSchedule = ({ match, history }) => {
                 {schedule.toss ? <>Start Match</> : <>Toss</>}
               </Link>
             ) : (
-              <Link className="btn btn-primary py-1 px-2 ml-2">Results</Link>
+              <Link
+                to={`/tournament/match/start/${schedule._id}`}
+                className="btn btn-primary py-1 px-2 ml-2"
+              >
+                Results
+              </Link>
             )}
 
             <Link

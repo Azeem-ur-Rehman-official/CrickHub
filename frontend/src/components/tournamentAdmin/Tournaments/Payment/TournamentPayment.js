@@ -9,10 +9,9 @@ import axios from 'axios';
 import { Fragment, useEffect } from 'react';
 import { useAlert } from 'react-alert';
 import { useDispatch, useSelector } from 'react-redux';
-import { emptyCart } from '../../actions/cartActions';
-import { clearErrors, createOrder } from '../../actions/orderActions';
-import MetaData from '../layout/MetaData';
-import CheckoutSteps from './CheckoutSteps';
+import { postData } from '../../../../routes/FetchData';
+
+import MetaData from '../../../layout/MetaData';
 
 const options = {
   style: {
@@ -38,28 +37,22 @@ const Payment = ({ history }) => {
   useEffect(() => {
     if (error) {
       alert.error(error);
-      dispatch(clearErrors());
     }
   }, [dispatch, alert, error]);
+  const Data = {
+    user: user._id,
 
-  const order = {
-    orderItems: cartItems,
-    shippingInfo,
+    paymentInfo: { id: '', status: false },
+    totalPrice: 2000,
   };
 
-  const orderInfo = JSON.parse(sessionStorage.getItem('orderInfo'));
-  if (orderInfo) {
-    order.itemsPrice = orderInfo.itemsPrice;
-    order.shippingPrice = orderInfo.shippingPrice;
-    order.taxPrice = orderInfo.taxPrice;
-    order.totalPrice = orderInfo.totalPrice;
-  }
-
   const paymentData = {
-    amount: Math.round(orderInfo.totalPrice * 100),
+    amount: Math.round(2000 * 100),
     name: user.name,
     email: user.email,
-    shippingInfo,
+    address: user.address,
+    postalCode: 839873,
+    city: user.city,
   };
 
   const submitHandler = async (e) => {
@@ -75,7 +68,7 @@ const Payment = ({ history }) => {
         },
       };
 
-      res = await axios.post('/api/v1/payment/process', paymentData, config);
+      res = await axios.post('/api/v1/payment/process/v', paymentData, config);
 
       const clientSecret = res.data.client_secret;
 
@@ -101,16 +94,20 @@ const Payment = ({ history }) => {
       } else {
         // The payment is processed or not
         if (result.paymentIntent.status === 'succeeded') {
-          order.paymentInfo = {
+          Data.paymentInfo = {
             id: result.paymentIntent.id,
             status: result.paymentIntent.status,
           };
+          postData(`/api/v1/user/subscription/buy`, Data)
+            .then((res) => {
+              history.push('/success/subscription');
+            })
+            .catch((err) => {
+              alert.show('somthing went wrong');
+            });
+          //dispatch(createOrder(order));
 
-          dispatch(createOrder(order));
-          dispatch(emptyCart());
           localStorage.removeItem('cartItems');
-
-          history.push('/success');
         } else {
           alert.error('There is some issue while payment processing');
         }
@@ -125,8 +122,6 @@ const Payment = ({ history }) => {
     <Fragment>
       <div className="container" data-aos="fade-up" data-aos-delay="50">
         <MetaData title={'Payment'} />
-
-        <CheckoutSteps shipping confirmOrder payment />
 
         <div className="row wrapper">
           <div className="col-10 col-lg-5">
@@ -163,7 +158,7 @@ const Payment = ({ history }) => {
               </div>
 
               <button id="pay_btn" type="submit" className="btn btn-block py-3">
-                Pay {`  ${orderInfo && orderInfo.totalPrice}`}
+                Pay Rs. 2000
               </button>
             </form>
           </div>

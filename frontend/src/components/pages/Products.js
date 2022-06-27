@@ -29,6 +29,7 @@ const Products = ({ match }) => {
     'Cricket Balls',
     'Cricket Footwear',
     'Halmets',
+    'Sport Shoes',
     'Cricket Bowling Machines',
   ];
 

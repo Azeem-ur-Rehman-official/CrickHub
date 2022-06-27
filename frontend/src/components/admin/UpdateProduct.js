@@ -31,6 +31,7 @@ const UpdateProduct = ({ match, history }) => {
     'Cricket Balls',
     'Cricket Footwear',
     'Halmets',
+    'Sport Shoes',
     'Cricket Bowling Machines',
   ];
 

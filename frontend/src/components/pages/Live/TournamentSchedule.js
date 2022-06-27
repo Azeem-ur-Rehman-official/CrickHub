@@ -71,11 +71,6 @@ const TournamentSchedule = ({ match, history }) => {
           field: 'location',
           sort: 'asc',
         },
-
-        {
-          label: 'Actions',
-          field: 'actions',
-        },
       ],
       rows: [],
     };
@@ -124,7 +119,7 @@ const TournamentSchedule = ({ match, history }) => {
   return (
     <Fragment>
       <MetaData title={'schedule-List'} />
-      <div className="row m-0">
+      <div className="row mx-auto container">
         <div className="col-12 col-md-12">
           <Fragment>
             <div className="d-flex  mx-3">

@@ -54,7 +54,7 @@ const Register = ({ history }) => {
     }
 
     if (error) {
-      alert.error(error);
+      // alert.error(error);
       dispatch(clearErrors());
     }
   }, [dispatch, isAuthenticated, error, history]);

@@ -17,7 +17,7 @@ const LiveScoreSchema = new mongoose.Schema({
   },
   bowler: {
     type: mongoose.Schema.ObjectId,
-    ref: 'JoinTeam',
+    ref: 'Player',
     required: [true, 'Bowler id required'],
   },
 
@@ -29,7 +29,7 @@ const LiveScoreSchema = new mongoose.Schema({
   },
   batsman: {
     type: mongoose.Schema.ObjectId,
-    ref: 'JoinTeam',
+    ref: 'player',
     required: [true, 'Batsman id required'],
   },
   playedBalls: {
@@ -46,7 +46,8 @@ const LiveScoreSchema = new mongoose.Schema({
     default: 0,
   },
   out: {
-    type: Boolean,
+    type: Number,
+    default: 0,
   },
   batsmanScore: {
     type: Number,

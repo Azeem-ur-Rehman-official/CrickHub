@@ -78,7 +78,19 @@ const TeamsList = ({ match, history }) => {
           field: 'owner',
           sort: 'asc',
         },
-
+        {
+          label: 'Loss',
+          field: 'loss',
+        },
+        {
+          label: 'Wins',
+          field: 'wins',
+        },
+        {
+          label: 'Points',
+          field: 'points',
+          sort: 'asc',
+        },
         {
           label: 'Actions',
           field: 'actions',
@@ -102,7 +114,9 @@ const TeamsList = ({ match, history }) => {
         ),
         id: team._id,
         name: team.name,
-
+        loss: team.lossMatch,
+        wins: team.winMatch,
+        points: team.winMatch - team.lossMatch,
         owner: team.ownerName,
 
         actions: (

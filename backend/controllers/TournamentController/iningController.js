@@ -39,6 +39,7 @@ exports.getSingleMatchIning = catchAsyncErrors(async (req, res, next) => {
   const ining = await Ining.findOne({ schedule: req.params.id })
     .populate('toss')
     .populate('schedule');
+
   if (!ining) {
     return next(new ErrorHandler('Ining not existes', 404));
   }
@@ -64,7 +65,7 @@ exports.getSingleMatchIning = catchAsyncErrors(async (req, res, next) => {
 //     });
 //   }
 // );
-//get all Ining
+//get all live Ining
 exports.getAllInings = catchAsyncErrors(async (req, res, next) => {
   const ining = await Ining.find({ liveStatus: true })
     .populate('toss')
@@ -79,13 +80,30 @@ exports.getAllInings = catchAsyncErrors(async (req, res, next) => {
     ining,
   });
 });
+//get all previous Ining
+exports.getAllPastInings = catchAsyncErrors(async (req, res, next) => {
+  const ining = await Ining.find({ liveStatus: false })
+    .populate('toss')
+    .populate('schedule')
+    .populate('team_A_id')
+    .populate('team_B_id');
+  if (!ining) {
+    return next(new ErrorHandler('schedules not existes', 404));
+  }
+  res.status(200).json({
+    success: true,
+    ining,
+  });
+});
 //get all schedules
 exports.getSingleInings = catchAsyncErrors(async (req, res, next) => {
+  console.log('ok');
   const ining = await Ining.findById(req.params.id)
     .populate('toss')
     .populate('schedule')
     .populate('team_A_id')
     .populate('team_B_id');
+  console.log(ining);
   if (!ining) {
     return next(new ErrorHandler('schedules not existes', 404));
   }

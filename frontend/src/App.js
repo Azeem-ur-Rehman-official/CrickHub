@@ -25,6 +25,8 @@ import UpdateFaq from './components/admin/UpdateFaq';
 import UpdateProduct from './components/admin/UpdateProduct';
 import UpdateUser from './components/admin/UpdateUser';
 import UsersList from './components/admin/UsersList';
+import SubscriptionSuccess from './components/tournamentAdmin/Tournaments/Payment/SubscriptionSuccess';
+import TournamentPayment from './components/tournamentAdmin/Tournaments/Payment/TournamentPayment';
 // Cart Imports
 import Cart from './components/cart/Cart';
 import ConfirmOrder from './components/cart/ConfirmOrder';
@@ -39,7 +41,6 @@ import Header from './components/layout/Header';
 import ListOrders from './components/order/ListOrders';
 import OrderDetails from './components/order/OrderDetails';
 import BlogPage from './components/pages/BlogPage';
-import BookNow from './components/pages/BookNow';
 import BlogCardDetail from './components/pages/cards/BlogCardDetail';
 import ChattForum from './components/pages/ChattForum';
 import ContactUs from './components/pages/ContactUs';
@@ -51,6 +52,7 @@ import TournamentTeams from './components/pages/Live/TournamentTeams';
 import TournamentTeamSquad from './components/pages/Live/TournamentTeamSquad';
 import Products from './components/pages/Products';
 import SearchedProducts from './components/pages/SearchedProducts';
+import TopPlayers from './components/pages/TopPlayers';
 import ProductDetails from './components/product/ProductDetails';
 import ProtectedRoute from './components/route/ProtectedRoute';
 //Tournament Dashboard
@@ -132,9 +134,14 @@ function App() {
           <Route path="/me/update" component={UpdateProfile} exact />
           <Route path="/discusion" component={ChattForum} exact />
           <Route path="/faq" component={FaqPage} exact />
-          <Route path="/booknow" component={BookNow} exact />
+          <Route path="/top/players" component={TopPlayers} exact />
           <Route path="/contactus" component={ContactUs} exact />
           <Route path="/products" component={Products} exact />
+          <Route
+            path="/success/subscription"
+            component={SubscriptionSuccess}
+            exact
+          />
           <Route path="/tournaments/matches/live" component={LivePage} exact />
           <Route
             path="/tournament/team/schedule/view/:id"
@@ -214,7 +221,14 @@ function App() {
               <ProtectedRoute path="/payment" component={Payment} />
             </Elements>
           )}
-
+          {stripeApiKey && (
+            <Elements stripe={loadStripe(stripeApiKey)}>
+              <ProtectedRoute
+                path="/tournament/payment"
+                component={TournamentPayment}
+              />
+            </Elements>
+          )}
           <Route path="/login" component={Login} exact />
 
           <Route path="/register" component={Register} exact />

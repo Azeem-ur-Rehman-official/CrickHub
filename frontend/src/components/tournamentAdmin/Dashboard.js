@@ -1,25 +1,46 @@
-import React, { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
   getAdminTournaments,
   getTournaments,
 } from '../../actions/tournamentActions';
+import { getData } from '../../routes/FetchData';
 import MetaData from '../layout/MetaData';
 import Sidebar from './Sidebar';
 const Dashboard = () => {
   const dispatch = useDispatch();
+  const [teams, setteams] = useState([]);
+  const [players, setplayers] = useState([]);
+  const [liveMatches, setliveMatches] = useState([]);
   const { user } = useSelector((state) => state.auth);
   const { Tournaments } = useSelector((state) => state.Tournaments);
-  // const getAllData = () => {
-  //   getData(`/api/v1/weekly`)
-  //     .then((res) => {
-  //       setWeeklyProfit((r) => (r = res.data.weeklyProf));
-  //     })
-  //     .catch((err) => console.log(err.response.data.msg));
-  // };
+  const getAllTeam = () => {
+    getData(`/api/v1/get/all/team`)
+      .then((res) => {
+        setteams(res.data.team);
+      })
+      .catch((err) => console.log(err.response.data.msg));
+  };
+  const getAllPlayers = () => {
+    getData(`/api/v1/tournament/players/profile`)
+      .then((res) => {
+        setplayers(res.data.player);
+      })
+      .catch((err) => console.log(err.response.data.msg));
+  };
+  const getAllLiveMatches = () => {
+    getData(`/api/v1/get/all/tournament/match/inings`)
+      .then((res) => {
+        setliveMatches(res.data.ining);
+      })
+      .catch((err) => console.log(err.response.data.msg));
+  };
 
   useEffect(() => {
+    getAllTeam();
+    getAllPlayers();
+    getAllLiveMatches();
     if (user && user.role !== 'admin') dispatch(getTournaments());
     else dispatch(getAdminTournaments());
   }, [user, dispatch]);
@@ -34,18 +55,21 @@ const Dashboard = () => {
         <div className="col-12 col-md-10 my-3">
           <Fragment>
             <MetaData title={'Admin Dashboard'} />
-            <div className="row pr-4">
-              <div className="col-xl-12 col-sm-12 mb-3">
-                <div className="topCard o-hidden h-100">
-                  <div className="card-body">
-                    <div className="text-center card-font-size">
-                      Total Amount
-                      <br /> <b>$</b>
+            {user && user.role !== 'admin' ? (
+              <div className="row pr-4">
+                <div className="col-xl-12 col-sm-12 mb-3">
+                  <div className="topCard o-hidden h-100">
+                    <div className="card-body">
+                      <div className="text-center card-font-size">
+                        Total Amount
+                        <br /> <b>$</b>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            ) : null}
+
             <div className="row pr-4">
               <div className="col-xl-3 col-sm-6 mb-3">
                 <div className="card o-hidden h-100">
@@ -57,7 +81,7 @@ const Dashboard = () => {
                   </div>
                   <Link
                     className="card-footer clearfix small z-1"
-                    to="/admin/products"
+                    to="/my/alltournaments"
                   >
                     <span className="float-left">Matches</span>
                     <span className="float-right">
@@ -71,13 +95,13 @@ const Dashboard = () => {
                 <div className="card o-hidden h-100">
                   <div className="card-body">
                     <div className="text-center card-font-size">
-                      Teams
-                      <br /> <b>575</b>
+                      Live Matches
+                      <br /> <b>{liveMatches.length}</b>
                     </div>
                   </div>
                   <Link
                     className="card-footer clearfix small z-1"
-                    to="/admin/orders"
+                    to="/tournaments/matches/live"
                   >
                     <span className="float-left">View Details</span>
                     <span className="float-right">
@@ -91,13 +115,13 @@ const Dashboard = () => {
                 <div className="card o-hidden h-100">
                   <div className="card-body">
                     <div className="text-center card-font-size">
-                      Users
-                      <br /> <b>6654</b>
+                      Total Players
+                      <br /> <b>{players.length}</b>
                     </div>
                   </div>
                   <Link
                     className="card-footer clearfix small z-1"
-                    to="/admin/users"
+                    to="/tournament/players/profile"
                   >
                     <span className="float-left">View Details</span>
                     <span className="float-right">
@@ -111,95 +135,22 @@ const Dashboard = () => {
                 <div className="card o-hidden h-100">
                   <div className="card-body">
                     <div className="text-center card-font-size cardDetail">
-                      Out of Stock
-                      <br /> <b>567</b>
+                      Teams
+                      <br /> <b>{teams.length}</b>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            {/* <div className='container-fluid'>
-                <div className='row p-5'>
-                  <div className='col-sm-8 mx-auto'>
-                    <Chart data={data} options={options} />
-                  </div>
-                 
-                </div>
-              </div> */}
-            {/* //------------------------- */}
-            {/* <div className="row pr-4">
-                <div className="col-xl-3 col-sm-6 mb-3">
-                  <div className="card  bg-success o-hidden h-100">
-                    <div className="card-body">
-                      <div className="text-center card-font-size">
-                        Complaints
-                        <br /> <b>{0}</b>
-                      </div>
-                    </div>
-                    <Link
-                      className="card-footer  clearfix small z-1"
-                      to="/admin/products"
-                    >
-                      <span className="float-left">View Details</span>
-                      <span className="float-right">
-                        <i className="fa fa-angle-right"></i>
-                      </span>
-                    </Link>
-                  </div>
-                </div>
-
-                <div className="col-xl-3 col-sm-6 mb-3">
-                  <div className="card  bg-warning o-hidden h-100">
-                    <div className="card-body">
-                      <div className="text-center card-font-size">
-                        Subscription
-                        <br /> <b>{orders && orders.length}</b>
-                      </div>
-                    </div>
-                    <Link
-                      className="card-footer  clearfix small z-1"
-                      to="/admin/orders"
-                    >
-                      <span className="float-left">View Details</span>
-                      <span className="float-right">
-                        <i className="fa fa-angle-right"></i>
-                      </span>
-                    </Link>
-                  </div>
-                </div>
-
-                <div className="col-xl-3 col-sm-6 mb-3">
-                  <div className="card  bg-info o-hidden h-100">
-                    <div className="card-body">
-                      <div className="text-center card-font-size">
-                        Users
-                        <br /> <b>{users && users.length}</b>
-                      </div>
-                    </div>
-                    <Link
-                      className="card-footer  clearfix small z-1"
-                      to="/admin/users"
-                    >
-                      <span className="float-left">View Details</span>
-                      <span className="float-right">
-                        <i className="fa fa-angle-right"></i>
-                      </span>
-                    </Link>
-                  </div>
-                </div>
-
-                <div className="col-xl-3 col-sm-6 mb-3">
-                  <div className="card  o-hidden h-100">
-                    <div className="card-body">
-                      <div className="text-center card-font-size cardDetail">
-                        Out of Stock
-                        <br /> <b>{outOfStock}</b>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
           </Fragment>
+          <div className="container">
+            <h5>User Statitics</h5>
+            <div className="row">
+              <div className="col-6">Total Tournaments</div>
+              <div className="col-6">Total Score</div>
+              <div className="col-6">Average</div>
+            </div>
+          </div>
         </div>
       </div>
     </Fragment>

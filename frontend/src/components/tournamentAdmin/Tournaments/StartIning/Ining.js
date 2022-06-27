@@ -6,8 +6,6 @@ import { getData, postData } from '../../../../routes/FetchData';
 import '../../../css/liveScorePannel.css';
 import LiveScoreIningCard from './LiveScoreIningCard';
 const Ining = (props) => {
-  console.log('props');
-  console.log(props);
   const alert = useAlert();
   const history = useHistory();
   //states
@@ -18,9 +16,11 @@ const Ining = (props) => {
   const [batsmanA, setbatsmanA] = useState('');
   const [batsmanB, setbatsmanB] = useState('');
   const [bowler, setbowler] = useState('');
+  const [bowlerName, setbowlerName] = useState('');
   const [noBalls, setnoBalls] = useState(0);
   const [wideBalls, setwideBalls] = useState(0);
   const [batsman, setbatsman] = useState('');
+  const [batsmanName, setbatsmanName] = useState('');
   const [previousPlayedBalls, setpreviousPlayedBalls] = useState(6);
   const [playedBalls, setplayedBalls] = useState(1);
   const [finishIningId, setfinishIningTeamId] = useState('');
@@ -78,6 +78,19 @@ const Ining = (props) => {
         console.log(err.message);
       });
   };
+  useEffect(() => {
+    if (teambatsmans && teambatsmans.length > 0)
+      teambatsmans.map((val, id) => {
+        if (val.user._id == batsman) setbatsmanName(val.user.name);
+      });
+    if (teamBowlers && teamBowlers.length > 0)
+      teamBowlers.map((val, id) => {
+        if (val.user._id == bowler) setbowlerName(val.user.name);
+      });
+    // setbatsmanName();
+    // setbowlerName();
+  }, [batsman, bowler]);
+
   useEffect(() => {
     getSingleIningLiveData(props.Ining._id);
     if (
@@ -253,6 +266,8 @@ const Ining = (props) => {
         noBalls,
         wideBalls,
         batsman,
+        batsmanName,
+        bowlerName,
         playedBalls,
         out,
         previousPlayedBalls,
@@ -272,229 +287,231 @@ const Ining = (props) => {
       <span className="">
         <LiveScoreIningCard payload={singleIningeLiveData} />
       </span>
-      <div>
-        <form
-          id="reused_form"
-          data-aos="fade-up"
-          data-aos-delay="50"
-          className="row "
-          onSubmit={submitHandler}
-        >
-          <div className="col-12 row my-2 m-0 p-0">
-            <div className="col-12 form-group my-2">
-              <h5 className="text-center text-success">
-                Total Over Score ({totalScore})
-              </h5>
+      {props.Ining.schedule.MatchCompleted == false ? (
+        <div>
+          <form
+            id="reused_form"
+            data-aos="fade-up"
+            data-aos-delay="50"
+            className="row "
+            onSubmit={submitHandler}
+          >
+            <div className="col-12 row my-2 m-0 p-0">
+              <div className="col-12 form-group my-2">
+                <h5 className="text-center text-success">
+                  Total Over Score ({totalScore})
+                </h5>
+              </div>
+              <div className="col-6 form-group">
+                <label htmlFor="team_input">Ining</label>
+                <input
+                  className="form-control"
+                  id="team_input"
+                  value={ining ? '1st' : '2nd'}
+                ></input>
+              </div>
+              <div className="col-6 form-group">
+                <label htmlFor="team_input">Over</label>
+                <input
+                  type="Number"
+                  className="form-control"
+                  min="0"
+                  max={props.Ining.overs}
+                  id="over"
+                  value={over}
+                  onChange={(e) => {
+                    setover(Number(e.target.value));
+                  }}
+                ></input>
+              </div>
+              <div className="col-6 form-group">
+                <label htmlFor="team_input">Batsman A</label>
+                <select
+                  value={batsmanA}
+                  onChange={(e) => setbatsmanA(e.target.value)}
+                  className="form-control"
+                  id="team_input"
+                >
+                  <option value="select">Select</option>
+                  {teambatsmans &&
+                    teambatsmans.length > 0 &&
+                    teambatsmans.map((val, id) => {
+                      return (
+                        <option value={val.user._id} key={id}>
+                          {val.user.name}
+                        </option>
+                      );
+                    })}
+                </select>
+              </div>
+              <div className="col-6 form-group">
+                <label htmlFor="team_input">Batsman B</label>
+                <select
+                  value={batsmanB}
+                  onChange={(e) => setbatsmanB(e.target.value)}
+                  className="form-control"
+                  id="team_input"
+                >
+                  <option value="select">Select</option>
+                  {teambatsmans &&
+                    teambatsmans.length > 0 &&
+                    teambatsmans.map((val, id) => {
+                      return (
+                        <option value={val.user._id} key={id}>
+                          {val.user.name}
+                        </option>
+                      );
+                    })}
+                </select>
+              </div>
             </div>
-            <div className="col-6 form-group">
-              <label htmlFor="team_input">Ining</label>
-              <input
-                className="form-control"
-                id="team_input"
-                value={ining ? '1st' : '2nd'}
-              ></input>
-            </div>
-            <div className="col-6 form-group">
-              <label htmlFor="team_input">Over</label>
-              <input
-                type="Number"
-                className="form-control"
-                min="0"
-                max={props.Ining.overs}
-                id="over"
-                value={over}
-                onChange={(e) => {
-                  setover(Number(e.target.value));
-                }}
-              ></input>
-            </div>
-            <div className="col-6 form-group">
-              <label htmlFor="team_input">Batsman A</label>
-              <select
-                value={batsmanA}
-                onChange={(e) => setbatsmanA(e.target.value)}
-                className="form-control"
-                id="team_input"
-              >
-                <option value="select">Select</option>
-                {teambatsmans &&
-                  teambatsmans.length > 0 &&
-                  teambatsmans.map((val, id) => {
-                    return (
-                      <option value={val.user._id} key={id}>
-                        {val.user.name}
-                      </option>
-                    );
-                  })}
-              </select>
-            </div>
-            <div className="col-6 form-group">
-              <label htmlFor="team_input">Batsman B</label>
-              <select
-                value={batsmanB}
-                onChange={(e) => setbatsmanB(e.target.value)}
-                className="form-control"
-                id="team_input"
-              >
-                <option value="select">Select</option>
-                {teambatsmans &&
-                  teambatsmans.length > 0 &&
-                  teambatsmans.map((val, id) => {
-                    return (
-                      <option value={val.user._id} key={id}>
-                        {val.user.name}
-                      </option>
-                    );
-                  })}
-              </select>
-            </div>
-          </div>
-          <div className="col-12 row my-2 m-0 p-0">
-            {' '}
-            <div className="col-6 col-md-4 col-lg-4 form-group">
-              <label htmlFor="team_input">Select Bowler</label>
-              <select
-                value={bowler}
-                onChange={(e) => setbowler(e.target.value)}
-                className="form-control"
-                id="team_input"
-              >
-                <option value="select">Select</option>
-                {teamBowlers &&
-                  teamBowlers.length > 0 &&
-                  teamBowlers.map((val, id) => {
-                    return (
-                      <option value={val.user._id} key={id}>
-                        {val.user.name}
-                      </option>
-                    );
-                  })}
-              </select>
-            </div>
-            <div className="col-6 col-md-4 col-lg-4 form-group">
-              <label htmlFor="team_input">No Balls</label>
-              <input
-                type="Number"
-                className="form-control"
-                id="no_balls"
-                value={noBalls}
-                onChange={(e) => setnoBalls(Number(e.target.value))}
-              ></input>
-            </div>
-            <div className="col-6 col-md-4 col-lg-4 form-group">
-              <label htmlFor="team_input">Wide Balls</label>
-              <input
-                type="Number"
-                className="form-control"
-                id="wide_balls"
-                value={wideBalls}
-                onChange={(e) => setwideBalls(Number(e.target.value))}
-              ></input>
-            </div>
-          </div>
-
-          <div className="col-12 row my-2 m-0 p-0">
-            <div className="col-6 col-md-3 col-lg-2 form-group">
-              <label htmlFor="team_input">Batsman</label>
-              <select
-                value={batsman}
-                onChange={(e) => setbatsman(e.target.value)}
-                className="form-control"
-                id="team_input"
-              >
-                <option value="choose">choose</option>
-
-                <option value={batsmanA}>Batsman A</option>
-                <option value={batsmanB}>Batsman B</option>
-              </select>
-            </div>
-            <div className="col-6 col-md-3 col-lg-2 form-group">
-              <label htmlFor="team_input">Played Balls</label>
-              <input
-                type="Number"
-                className="form-control"
-                id="wide_balls"
-                min={1}
-                max={previousPlayedBalls}
-                value={playedBalls}
-                onChange={(e) => setplayedBalls(Number(e.target.value))}
-              ></input>
+            <div className="col-12 row my-2 m-0 p-0">
+              {' '}
+              <div className="col-6 col-md-4 col-lg-4 form-group">
+                <label htmlFor="team_input">Select Bowler</label>
+                <select
+                  value={bowler}
+                  onChange={(e) => setbowler(e.target.value)}
+                  className="form-control"
+                  id="team_input"
+                >
+                  <option value="select">Select</option>
+                  {teamBowlers &&
+                    teamBowlers.length > 0 &&
+                    teamBowlers.map((val, id) => {
+                      return (
+                        <option value={val.user._id} key={id}>
+                          {val.user.name}
+                        </option>
+                      );
+                    })}
+                </select>
+              </div>
+              <div className="col-6 col-md-4 col-lg-4 form-group">
+                <label htmlFor="team_input">No Balls</label>
+                <input
+                  type="Number"
+                  className="form-control"
+                  id="no_balls"
+                  value={noBalls}
+                  onChange={(e) => setnoBalls(Number(e.target.value))}
+                ></input>
+              </div>
+              <div className="col-6 col-md-4 col-lg-4 form-group">
+                <label htmlFor="team_input">Wide Balls</label>
+                <input
+                  type="Number"
+                  className="form-control"
+                  id="wide_balls"
+                  value={wideBalls}
+                  onChange={(e) => setwideBalls(Number(e.target.value))}
+                ></input>
+              </div>
             </div>
 
-            <div className="col-6 col-md-3 col-lg-2 form-group">
-              <label htmlFor="team_input">Sixs</label>
-              <input
-                type="Number"
-                className="form-control"
-                id="wide_balls"
-                value={sixs}
-                onChange={(e) => {
-                  noBalls + playedBalls > sixs + fours &&
-                    setsixs(Number(e.target.value));
-                }}
-              ></input>
-            </div>
-            <div className="col-6 col-md-3 col-lg-2 form-group">
-              <label htmlFor="team_input">Fours</label>
-              <input
-                type="Number"
-                className="form-control"
-                id="wide_balls"
-                value={fours}
-                onChange={(e) => {
-                  noBalls + playedBalls > sixs + fours &&
-                    setfours(Number(e.target.value));
-                }}
-              ></input>
-            </div>
-            <div className="col-6 col-md-3 col-lg-2 form-group">
-              <label htmlFor="team_input">Runing</label>
-              <input
-                type="Number"
-                className="form-control"
-                id="batsman_score"
-                value={running}
-                onChange={(e) => setrunning(Number(e.target.value))}
-              ></input>
-            </div>
-            <div className="col-6 col-md-3 col-lg-2 form-group">
-              <label htmlFor="team_input">Batsman Score</label>
-              <span className="form-control" id="batsman_score">
-                {batsmanScore}
-              </span>
-            </div>
-            <div className="col-12 col-md-12 col-lg-12 form-group row mx-auto mt-2">
-              <h5 className="outHeading mt-2 text-danger">OUT</h5>
-              <input
-                className="form-control rounded outCheck mx-1"
-                type="checkbox"
-                focus={false}
-                value={out}
-                onChange={(e) => setout(!out)}
-              ></input>
-            </div>
-          </div>
+            <div className="col-12 row my-2 m-0 p-0">
+              <div className="col-6 col-md-3 col-lg-2 form-group">
+                <label htmlFor="team_input">Batsman</label>
+                <select
+                  value={batsman}
+                  onChange={(e) => setbatsman(e.target.value)}
+                  className="form-control"
+                  id="team_input"
+                >
+                  <option value="choose">choose</option>
 
-          <div className="col-6 form-group mb-5">
-            <button
-              className="btn btn-raised btn-block btn-success"
-              type="submit"
-              id="post"
-            >
-              Update Score
-            </button>
-          </div>
-          <div className="col-6 form-group mb-5">
-            <button
-              className="btn btn-raised btn-block btn-danger"
-              onClick={() => finishIning()}
-              id="post"
-            >
-              Finish {ining ? '1st' : '2nd'} Ining
-            </button>
-          </div>
-        </form>
-      </div>
+                  <option value={batsmanA}>Batsman A</option>
+                  <option value={batsmanB}>Batsman B</option>
+                </select>
+              </div>
+              <div className="col-6 col-md-3 col-lg-2 form-group">
+                <label htmlFor="team_input">Played Balls</label>
+                <input
+                  type="Number"
+                  className="form-control"
+                  id="wide_balls"
+                  min={1}
+                  max={previousPlayedBalls}
+                  value={playedBalls}
+                  onChange={(e) => setplayedBalls(Number(e.target.value))}
+                ></input>
+              </div>
+
+              <div className="col-6 col-md-3 col-lg-2 form-group">
+                <label htmlFor="team_input">Sixs</label>
+                <input
+                  type="Number"
+                  className="form-control"
+                  id="wide_balls"
+                  value={sixs}
+                  onChange={(e) => {
+                    noBalls + playedBalls > sixs + fours &&
+                      setsixs(Number(e.target.value));
+                  }}
+                ></input>
+              </div>
+              <div className="col-6 col-md-3 col-lg-2 form-group">
+                <label htmlFor="team_input">Fours</label>
+                <input
+                  type="Number"
+                  className="form-control"
+                  id="wide_balls"
+                  value={fours}
+                  onChange={(e) => {
+                    noBalls + playedBalls > sixs + fours &&
+                      setfours(Number(e.target.value));
+                  }}
+                ></input>
+              </div>
+              <div className="col-6 col-md-3 col-lg-2 form-group">
+                <label htmlFor="team_input">Runing</label>
+                <input
+                  type="Number"
+                  className="form-control"
+                  id="batsman_score"
+                  value={running}
+                  onChange={(e) => setrunning(Number(e.target.value))}
+                ></input>
+              </div>
+              <div className="col-6 col-md-3 col-lg-2 form-group">
+                <label htmlFor="team_input">Batsman Score</label>
+                <span className="form-control" id="batsman_score">
+                  {batsmanScore}
+                </span>
+              </div>
+              <div className="col-12 col-md-12 col-lg-12 form-group row mx-auto mt-2">
+                <h5 className="outHeading mt-2 text-danger">OUT</h5>
+                <input
+                  className="form-control rounded outCheck mx-1"
+                  type="checkbox"
+                  focus={false}
+                  value={out}
+                  onChange={(e) => setout(!out)}
+                ></input>
+              </div>
+            </div>
+
+            <div className="col-6 form-group mb-5">
+              <button
+                className="btn btn-raised btn-block btn-success"
+                type="submit"
+                id="post"
+              >
+                Update Score
+              </button>
+            </div>
+            <div className="col-6 form-group mb-5">
+              <button
+                className="btn btn-raised btn-block btn-danger"
+                onClick={() => finishIning()}
+                id="post"
+              >
+                Finish {ining ? '1st' : '2nd'} Ining
+              </button>
+            </div>
+          </form>
+        </div>
+      ) : null}
     </div>
   );
 };

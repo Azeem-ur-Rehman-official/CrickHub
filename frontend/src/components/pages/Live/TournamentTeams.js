@@ -2,7 +2,6 @@ import { MDBDataTable } from 'mdbreact';
 import { Fragment, useEffect, useState } from 'react';
 import { useAlert } from 'react-alert';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import {
   adminDeleteTeams,
   clearErrors,
@@ -72,12 +71,19 @@ const TournamentTeams = ({ match, history }) => {
         {
           label: 'Owner',
           field: 'owner',
-          sort: 'asc',
         },
-
         {
-          label: 'Actions',
-          field: 'actions',
+          label: 'Loss',
+          field: 'loss',
+        },
+        {
+          label: 'Wins',
+          field: 'wins',
+        },
+        {
+          label: 'Points',
+          field: 'points',
+          sort: 'asc',
         },
       ],
       rows: [],
@@ -98,20 +104,10 @@ const TournamentTeams = ({ match, history }) => {
         ),
 
         name: team.name,
-
+        loss: team.lossMatch,
+        wins: team.winMatch,
+        points: team.winMatch - team.lossMatch,
         owner: team.ownerName,
-
-        actions: (
-          <Fragment>
-            <Link
-              to={`/tournament/live/team/squad/${team._id}`}
-              className="btn btn-primary py-1 px-2"
-            >
-              Squad
-              <i className="fa fa-users ml-2"></i>
-            </Link>
-          </Fragment>
-        ),
       });
     });
 
@@ -121,7 +117,7 @@ const TournamentTeams = ({ match, history }) => {
   return (
     <Fragment>
       <MetaData title={'Team-List'} />
-      <div className="row m-0">
+      <div className="container row mx-auto">
         <div className="col-12 col-md-12">
           <Fragment>
             <div className="d-flex  mx-3">

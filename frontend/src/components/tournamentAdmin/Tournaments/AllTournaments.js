@@ -148,12 +148,21 @@ const AllTournaments = ({ history }) => {
           <Fragment>
             <div className="d-flex  mx-3">
               <h3 className="my-5">All Tournaments</h3>
-              <Link
-                to="/tournament/create"
-                className="btn order-button ml-auto my-auto px-4"
-              >
-                <i className="fa fa-plus"></i> Create
-              </Link>
+              {user && user.role === 'admin' ? (
+                <Link
+                  to="/tournament/create"
+                  className="btn order-button ml-auto my-auto px-4"
+                >
+                  <i className="fa fa-plus"></i> Create
+                </Link>
+              ) : (
+                <Link
+                  to="/tournament/payment"
+                  className="btn order-button ml-auto my-auto px-4"
+                >
+                  <i className="fa fa-plus"></i> Create
+                </Link>
+              )}
             </div>
 
             {loading ? (

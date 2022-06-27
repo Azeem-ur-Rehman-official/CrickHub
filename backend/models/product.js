@@ -40,6 +40,7 @@ const productSchema = new mongoose.Schema({
       values: [
         'Cricket Clothing',
         'Batting Equipment',
+        'Sport Shoes',
         'Wicket Set',
         'Wicket Keeping Equipment',
         'Cricket Bats',

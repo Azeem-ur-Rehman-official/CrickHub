@@ -11,6 +11,14 @@ const teamSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  lossMatch: {
+    type: Number,
+    default: 0,
+  },
+  winMatch: {
+    type: Number,
+    default: 0,
+  },
   image: {
     public_id: {
       type: String,

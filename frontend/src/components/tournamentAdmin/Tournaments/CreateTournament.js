@@ -17,7 +17,6 @@ const CreateTournament = ({ history }) => {
   const [image, setimage] = useState('');
   const [imagePreview, setimagePreview] = useState('/images/default_image.png');
 
-  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const { loading, error, success } = useSelector(
     (state) => state.newTournament
@@ -36,8 +35,7 @@ const CreateTournament = ({ history }) => {
     formData.set('endingDate', endDate);
     formData.set('image', image);
 
-    if (user.role !== 'admin') window.alert('Payment First');
-    else PostData();
+    PostData();
   };
 
   useEffect(() => {

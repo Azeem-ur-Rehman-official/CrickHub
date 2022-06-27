@@ -80,6 +80,8 @@ io.on('connection', (socket) => {
 
   socket.on('pushLiveTeamScore', async (msg) => {
     try {
+      if (msg.out == true) msg.out = 1;
+      else msg.out = 0;
       const live_score = new liveScore(msg);
 
       let _id = msg.toss;
@@ -87,7 +89,7 @@ io.on('connection', (socket) => {
       const remainingBalls = msg.previousPlayedBalls - msg.playedBalls;
       if (allScore.team_A_id == msg.batingTeamID) {
         allScore.teamA_Score = allScore.teamA_Score + msg.totalScore;
-        if (msg.out == true) {
+        if (msg.out == 1) {
           allScore.teamA_out = allScore.teamA_out + 1;
         }
         if (remainingBalls > 0) {
@@ -98,7 +100,7 @@ io.on('connection', (socket) => {
         }
       } else {
         allScore.teamB_Score = allScore.teamB_Score + msg.totalScore;
-        if (msg.out == true) {
+        if (msg.out == 1) {
           allScore.teamB_out = allScore.teamB_out + 1;
         }
         if (remainingBalls > 0) {
@@ -134,8 +136,8 @@ io.on('connection', (socket) => {
       ) {
         const team1 = await Team.findById(msg.winnerTeam);
         const team2 = await Team.findById(msg.loserTeam);
-        if (team1) team1.points = team1.points + 1;
-        if (team2) team2.points = team2.points - 1;
+        if (team1) team1.winMatch = team1.winMatch + 1;
+        if (team2) team2.lossMatch = team2.lossMatch + 1;
         await team1.save();
         await team2.save();
         const schedule = await Schedule.findById(msg._id);
